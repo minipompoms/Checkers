@@ -44,9 +44,10 @@ namespace Checkers
             
             if (x >= 2)
             {
-                Cell beingChecked = board.getBoard()[x-1, y-1];
+                Cell beingChecked;
                 if (y >= 2) //check left
                 {
+                    beingChecked = board.getBoard()[x - 1, y - 1];
                     if (isNoMatch(beingChecked, cell)) 
                     {
                         canJump = isEmpty(board.getBoard()[x-2, y-2]);
@@ -54,10 +55,10 @@ namespace Checkers
                 }
                 if (!canJump && y <= 5)
                 {
-                    beingChecked = board.getBoard()[x+1, y+1];
+                    beingChecked = board.getBoard()[x-1, y+1];
                     if (isNoMatch(beingChecked, cell)) 
                     {
-                        canJump = isEmpty(board.getBoard()[x+2, y+2]);
+                        canJump = isEmpty(board.getBoard()[x-2, y+2]);
                     }
 
                 }
@@ -67,7 +68,32 @@ namespace Checkers
 
         private bool checkSouth(Cell cell)
         {
-            throw new NotImplementedException();
+            bool canJump = false;
+            int x = cell.x;
+            int y = cell.y;
+
+            if (x <= 5)
+            {
+                Cell beingChecked;
+                if (y >= 2) //check left
+                {
+                    beingChecked = board.getBoard()[x + 1, y - 1];
+                    if (isNoMatch(beingChecked, cell))
+                    {
+                        canJump = isEmpty(board.getBoard()[x + 2, y - 2]);
+                    }
+                }
+                if (!canJump && y <= 5)
+                {
+                    beingChecked = board.getBoard()[x + 1, y + 1];
+                    if (isNoMatch(beingChecked, cell))
+                    {
+                        canJump = isEmpty(board.getBoard()[x + 2, y + 2]);
+                    }
+
+                }
+            }
+            return canJump;
         }
         
          private bool isBlack(bool who, Cell cell)
