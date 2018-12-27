@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Checkers
 {
@@ -70,16 +71,17 @@ namespace Checkers
             List<Cell> jumpables = new List<Cell>();
             foreach (Cell cell in board)
             {
-                if (who == Player.RED && cell.color == Cell.contents.RED)
+                
+                if (isRed(who, cell))
                 {
-                    if (checkDown(cell) || (cell.king && checkUp(cell)))
+                    if (isChecked(cell))
                     {
                         jumpables.Add(cell);
                     }
                 }
-                else if (who == Player.BLACK && cell.color == Cell.contents.BLACK)
+                else if (isBlack(who, cell))
                 {
-                    if (checkUp(cell) || (cell.king && checkDown(cell)))
+                    if (isChecked(cell))
                     {
                         jumpables.Add(cell);
                     }
@@ -88,6 +90,21 @@ namespace Checkers
             return jumpables;
         }
 
+        private bool isBlack(bool who, Cell cell)
+        {
+            return who.Equals(Player.BLACK) && cell.color.Equals(Cell.contents.BLACK);
+        }
+        private bool isRed(bool who, Cell cell)
+        {
+            return who.Equals(Player.RED) && cell.color.Equals(Cell.contents.RED);
+        }
+
+        private bool isChecked(Cell cell)
+        {
+            return (checkUp(cell) || (cell.king && checkDown(cell)))
+                    || (checkDown(cell) || (cell.king && checkUp(cell)));
+        }
+        
         private bool checkUp(Cell cell)
         {
             bool canJump = false;
@@ -96,32 +113,31 @@ namespace Checkers
                 Cell beingChecked = board[cell.x - 1, cell.y - 1];
                 if (cell.y >= 2) //check left
                 {
-                    if (beingChecked.color != cell.color && beingChecked.color != Cell.contents.NONE)
+                    if (isNoMatch(beingChecked, cell)) 
                     {
-                        canJump = cellIsEmpty(board[cell.x - 2, cell.y - 2]);
+                        canJump = isEmpty(board[cell.x - 2, cell.y - 2]);
                     }
                 }
                 if (!canJump && cell.y <= 5)
                 {
                     beingChecked = board[cell.x + 1, cell.y + 1];
-                    if (beingChecked.color != cell.color && beingChecked.color != Cell.contents.NONE)
+                    if (isNoMatch(beingChecked, cell)) 
                     {
-                        canJump = cellIsEmpty(board[cell.x + 2, cell.y + 2]);
+                        canJump = isEmpty(board[cell.x + 2, cell.y + 2]);
                     }
 
                 }
             }
             return canJump;
         }
-        
-        private bool cellIsEmpty(Cell cell)
+
+        private bool isNoMatch(Cell checking, Cell currentCell)
         {
-            bool isEmpty = false;
-            if (cell.color == Cell.contents.NONE)
-            {
-                isEmpty = true;
-            }
-            return isEmpty;
+            return (!checking.color.Equals(currentCell.color) && (!checking.color.Equals(Cell.contents.NONE)));
+        }
+        private bool isEmpty(Cell cell)
+        {
+            return cell.color.Equals(Cell.contents.NONE);
         }
 
         private bool checkDown(Cell cell)

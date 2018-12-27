@@ -7,3 +7,6 @@
 *.iml
 out
 gen
+.vs/
+Checkers/obj/Debug/TempPE/
+Would skip repository https:/github.com/minipompoms/Checkers.git

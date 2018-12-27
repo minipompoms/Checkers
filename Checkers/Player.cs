@@ -11,4 +11,7 @@ namespace Checkers
         public static bool RED = true;
         public static bool BLACK = false;
     }
+   
+    
+    
 }
