@@ -1,0 +1,9 @@
+/Users/paige/RiderProjects/Checkers/Checkers/bin/Debug/Checkers.exe.config
+/Users/paige/RiderProjects/Checkers/Checkers/bin/Debug/Checkers.exe
+/Users/paige/RiderProjects/Checkers/Checkers/bin/Debug/Checkers.pdb
+/Users/paige/RiderProjects/Checkers/Checkers/obj/Debug/Checkers.csprojAssemblyReference.cache
+/Users/paige/RiderProjects/Checkers/Checkers/obj/Debug/Checkers.Properties.Resources.resources
+/Users/paige/RiderProjects/Checkers/Checkers/obj/Debug/Checkers.csproj.GenerateResource.cache
+/Users/paige/RiderProjects/Checkers/Checkers/obj/Debug/Checkers.csproj.CoreCompileInputs.cache
+/Users/paige/RiderProjects/Checkers/Checkers/obj/Debug/Checkers.exe
+/Users/paige/RiderProjects/Checkers/Checkers/obj/Debug/Checkers.pdb
