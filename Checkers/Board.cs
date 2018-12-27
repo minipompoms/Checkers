@@ -21,15 +21,15 @@ namespace Checkers
                 {
                     if (((row == 0 || row == 2) && col % 2 != 0) || (row == 1 && col % 2 == 0))
                     {
-                        board[row, col] = new Cell(Cell.contents.BLACK, row, col);
+                        board[row, col] = new Cell(Cell.Contents.BLACK, row, col);
                     }
                     else if (((row == 5 || row == 7) && col % 2 == 0) || (row == 6 && col % 2 != 0))
                     {
-                        board[row, col] = new Cell(Cell.contents.RED, row, col);
+                        board[row, col] = new Cell(Cell.Contents.RED, row, col);
                     }
                     else
                     {
-                        board[row, col] = new Cell(Cell.contents.NONE, row, col);
+                        board[row, col] = new Cell(Cell.Contents.NONE, row, col);
                     }
                 }
             }
@@ -92,20 +92,20 @@ namespace Checkers
 
         private bool isBlack(bool who, Cell cell)
         {
-            return who.Equals(Player.BLACK) && cell.color.Equals(Cell.contents.BLACK);
+            return who.Equals(Player.BLACK) && cell.color.Equals(Cell.Contents.BLACK);
         }
         private bool isRed(bool who, Cell cell)
         {
-            return who.Equals(Player.RED) && cell.color.Equals(Cell.contents.RED);
+            return who.Equals(Player.RED) && cell.color.Equals(Cell.Contents.RED);
         }
 
         private bool isChecked(Cell cell)
         {
-            return (checkUp(cell) || (cell.king && checkDown(cell)))
-                    || (checkDown(cell) || (cell.king && checkUp(cell)));
+            return (checkNorth(cell) || (cell.king && checkSouth(cell)))
+                    || (checkSouth(cell) || (cell.king && checkNorth(cell)));
         }
         
-        private bool checkUp(Cell cell)
+        private bool checkNorth(Cell cell)
         {
             bool canJump = false;
             if (cell.x >= 2)
@@ -131,18 +131,23 @@ namespace Checkers
             return canJump;
         }
 
+        private bool checkSouth(Cell cell)
+        {
+            throw new NotImplementedException();
+        }
+        
         private bool isNoMatch(Cell checking, Cell currentCell)
         {
-            return (!checking.color.Equals(currentCell.color) && (!checking.color.Equals(Cell.contents.NONE)));
+            return (!checking.color.Equals(currentCell.color) && (!checking.color.Equals(Cell.Contents.NONE)));
         }
         private bool isEmpty(Cell cell)
         {
-            return cell.color.Equals(Cell.contents.NONE);
+            return cell.color.Equals(Cell.Contents.NONE);
         }
 
-        private bool checkDown(Cell cell)
+        public Cell[,] getBoard()
         {
-            throw new NotImplementedException();
+            return board;
         }
     }
 }
