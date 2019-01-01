@@ -106,10 +106,11 @@ namespace Checkers
             return who.Equals(Player.RED) && cell.color.Equals(Cell.Contents.RED);
         }
 
+       
         private bool isChecked(Cell cell)
         {
-            return (checkNorth(cell) || (cell.king && checkSouth(cell)))
-                   || (checkSouth(cell) || (cell.king && checkNorth(cell)));
+            return (checkNorth(cell) || (cell.king && checkSouth(cell)) && cell.color == Cell.Contents.BLACK)
+                   || (checkSouth(cell) || (cell.king && checkNorth(cell)) && cell.color == Cell.Contents.RED);
         }
 
         private bool isNoMatch(Cell checking, Cell currentCell)
