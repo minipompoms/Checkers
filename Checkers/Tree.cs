@@ -5,6 +5,7 @@ namespace Checkers
 {
     class Tree<T>
     {
+        private Move move;
         private List<Tree<T>> children;
         private T value;
 

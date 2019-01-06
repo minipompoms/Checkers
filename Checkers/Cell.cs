@@ -2,15 +2,15 @@
 {
     public class Cell
     {
-        public enum Contents { RED, BLACK, NONE };
-        public Contents color { get; set; }
+        public enum Pawn { RED, BLACK, NONE };
+        public Pawn color { get; set; }
 
         public bool king { get; set; }
         public int x { get; }
         public int y { get; }
 
 
-        public Cell(Contents con, int row, int col)
+        public Cell(Pawn con, int row, int col)
         {
             color = con;
             x = row;
@@ -19,21 +19,21 @@
 
         public void clearCell()
         {
-            color = Contents.NONE;
+            color = Pawn.NONE;
         }
 
         public bool changeColor(bool who)
         {
-            if (color != Contents.NONE)
+            if (color != Pawn.NONE)
             {
                 if (who.Equals(Player.BLACK))
                 {
-                    color = Contents.BLACK;
+                    color = Pawn.BLACK;
                     return true;
                 }
                 if (who.Equals(Player.RED))
                 {
-                    color = Contents.RED;
+                    color = Pawn.RED;
                     return true;
                 }
             }

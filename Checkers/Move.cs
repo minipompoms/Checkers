@@ -95,11 +95,11 @@ namespace Checkers
             Cell downLeft = getDownLeftCell(cell);
             Cell downRight = getDownRightCell(cell);
 
-            if (cell.color.Equals(Cell.Contents.RED))
+            if (cell.color.Equals(Cell.Pawn.RED))
             {
                 return redPieceCanBeJumped(cell, upLeft, upRight, downLeft, downRight);
             }
-            if (cell.color.Equals(Cell.Contents.BLACK))
+            if (cell.color.Equals(Cell.Pawn.BLACK))
             {
                 return blackPieceCanBeJumped(cell, upLeft, upRight, downLeft, downRight);
             }
@@ -408,28 +408,28 @@ namespace Checkers
 
         private bool isBlack(bool who, Cell cell)
         {
-            return who.Equals(Player.BLACK) && cell.color.Equals(Cell.Contents.BLACK);
+            return who.Equals(Player.BLACK) && cell.color.Equals(Cell.Pawn.BLACK);
         }
 
         private bool isRed(bool who, Cell cell)
         {
-            return who.Equals(Player.RED) && cell.color.Equals(Cell.Contents.RED);
+            return who.Equals(Player.RED) && cell.color.Equals(Cell.Pawn.RED);
         }
 
 
         private bool isChecked(Cell cell)
         {
-            return (checkNorth(cell) || (cell.king && checkSouth(cell)) && cell.color == Cell.Contents.BLACK)
-                   || (checkSouth(cell) || (cell.king && checkNorth(cell)) && cell.color == Cell.Contents.RED);
+            return (checkNorth(cell) || (cell.king && checkSouth(cell)) && cell.color == Cell.Pawn.BLACK)
+                   || (checkSouth(cell) || (cell.king && checkNorth(cell)) && cell.color == Cell.Pawn.RED);
         }
 
         private bool isNoMatch(Cell checking, Cell currentCell)
         {
-            return (!checking.color.Equals(currentCell.color) && (!checking.color.Equals(Cell.Contents.NONE)));
+            return (!checking.color.Equals(currentCell.color) && (!checking.color.Equals(Cell.Pawn.NONE)));
         }
         private bool isEmpty(Cell cell)
         {
-            return cell.color.Equals(Cell.Contents.NONE);
+            return cell.color.Equals(Cell.Pawn.NONE);
         }
 
         private bool isKing(Cell cell)

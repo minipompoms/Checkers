@@ -21,15 +21,15 @@ namespace Checkers
                 {
                     if (((row == 0 || row == 2) && col % 2 != 0) || (row == 1 && col % 2 == 0))
                     {
-                        board[row, col] = new Cell(Cell.Contents.BLACK, row, col);
+                        board[row, col] = new Cell(Cell.Pawn.BLACK, row, col);
                     }
                     else if (((row == 5 || row == 7) && col % 2 == 0) || (row == 6 && col % 2 != 0))
                     {
-                        board[row, col] = new Cell(Cell.Contents.RED, row, col);
+                        board[row, col] = new Cell(Cell.Pawn.RED, row, col);
                     }
                     else
                     {
-                        board[row, col] = new Cell(Cell.Contents.NONE, row, col);
+                        board[row, col] = new Cell(Cell.Pawn.NONE, row, col);
                     }
                 }
             }
@@ -92,11 +92,11 @@ namespace Checkers
 
         private bool isBlack(bool who, Cell cell)
         {
-            return who.Equals(Player.BLACK) && cell.color.Equals(Cell.Contents.BLACK);
+            return who.Equals(Player.BLACK) && cell.color.Equals(Cell.Pawn.BLACK);
         }
         private bool isRed(bool who, Cell cell)
         {
-            return who.Equals(Player.RED) && cell.color.Equals(Cell.Contents.RED);
+            return who.Equals(Player.RED) && cell.color.Equals(Cell.Pawn.RED);
         }
 
         private bool isChecked(Cell cell)
@@ -138,11 +138,11 @@ namespace Checkers
         
         private bool isNoMatch(Cell checking, Cell currentCell)
         {
-            return (!checking.color.Equals(currentCell.color) && (!checking.color.Equals(Cell.Contents.NONE)));
+            return (!checking.color.Equals(currentCell.color) && (!checking.color.Equals(Cell.Pawn.NONE)));
         }
         private bool isEmpty(Cell cell)
         {
-            return cell.color.Equals(Cell.Contents.NONE);
+            return cell.color.Equals(Cell.Pawn.NONE);
         }
 
         public Cell[,] getBoard()
