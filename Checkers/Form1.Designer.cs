@@ -28,13 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.pnlBoard = new System.Windows.Forms.Panel();
+            this.SuspendLayout();
+            // 
+            // pnlBoard
+            // 
+            this.pnlBoard.Location = new System.Drawing.Point(0, 0);
+            this.pnlBoard.Name = "pnlBoard";
+            this.pnlBoard.Size = new System.Drawing.Size(579, 383);
+            this.pnlBoard.TabIndex = 0;
+            // 
+            // UserInterface
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.Controls.Add(this.pnlBoard);
+            this.Name = "UserInterface";
+            this.Text = "Checkers";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Panel pnlBoard;
     }
 }
 
