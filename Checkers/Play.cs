@@ -8,11 +8,11 @@ namespace Checkers
     public static class Play
     {
         
-        public static bool IsMovePossible(Board[][] board, Move move, List<Point> checkersToRemove = default(List<Point>))
+        public static bool IsMovePossible(Cell[][] cell, Move move, List<Point> pawnsToRemove = default(List<Point>))
         {
-            if (checkersToRemove == null)
+            if (pawnsToRemove == null)
             {
-                checkersToRemove = new List<Point>();
+                pawnsToRemove = new List<Point>();
             }
 
             if (move.XEnd < 0 || move.XEnd > 7 || move.YEnd < 0 || move.YEnd > 7)
@@ -20,20 +20,20 @@ namespace Checkers
                 return false;
             }
             
-            Board destination = board[move.XEnd][move.YEnd];
-            if (destination.Check != null)
+            Cell destination = cell[move.XEnd][move.YEnd];
+            if (destination.StatusCheck != null)
             {
                 return false;
             }
 
-            Board start = board[move.XStart][move.YStart];
-            if (start.Check == null)
+            Cell start = cell[move.XStart][move.YStart];
+            if (start.StatusCheck == null)
             {
                 return false;
             }
-            bool checkKing = start.Check.IsKing;
-            bool isForward = start.Check.isAI && move.YEnd >= move.YStart;
-            isForward = isForward || (!start.Check.isAI && move.YEnd <= move.YStart);
+            bool checkKing = start.StatusCheck.isKing;
+            bool isForward = start.StatusCheck.isAI && move.YEnd >= move.YStart;
+            isForward = isForward || (!start.StatusCheck.isAI && move.YEnd <= move.YStart);
             if (!isForward && !checkKing)
             {
                 return false;
@@ -48,22 +48,22 @@ namespace Checkers
             }
             else if ((Math.Abs(move.XEnd - move.XStart) == 2 && Math.Abs(move.YEnd - move.YStart) == 2))
             {
-                if (checkersToRemove == null)
+                if (pawnsToRemove == null)
                 {
-                    checkersToRemove = new List<Point>();
+                    pawnsToRemove = new List<Point>();
                 }
                 var xFieldBetween = move.XStart + (move.XEnd - move.XStart) / 2;
                 var yFieldBetween = move.YStart + (move.YEnd - move.YStart) / 2;
-                Board between = board[xFieldBetween][yFieldBetween];
-                if (between.Check == null)
+                Cell between = cell[xFieldBetween][yFieldBetween];
+                if (between.StatusCheck == null)
                 {
                     return false;
                 }
-                if (!start.Check.isAI)
+                if (!start.StatusCheck.isAI)
                 {
-                    if (between.Check.isAI)
+                    if (between.StatusCheck.isAI)
                     {
-                        checkersToRemove.Add(new Point(xFieldBetween, yFieldBetween));
+                        pawnsToRemove.Add(new Point(xFieldBetween, yFieldBetween));
                         return true;
                     }
                     else
@@ -75,11 +75,11 @@ namespace Checkers
                         return false;
                     }
                 }
-                else if (start.Check.isAI)
+                else if (start.StatusCheck.isAI)
                 {
-                    if (!between.Check.isAI)
+                    if (!between.StatusCheck.isAI)
                     {
-                        checkersToRemove.Add(new Point(xFieldBetween, yFieldBetween));
+                        pawnsToRemove.Add(new Point(xFieldBetween, yFieldBetween));
                         return true;
                     }
                     else
@@ -100,7 +100,7 @@ namespace Checkers
             {
                 //its recurring capture
                 bool atLeastOneGood = false;
-                //IsGoodRecurring(board, move, checkersToRemove, ref atLeastOneGood);
+                //IsGoodRecurring(cell, move, pawnsToRemove, ref atLeastOneGood);
                 if (atLeastOneGood)
                 {
                     return true;
@@ -117,15 +117,15 @@ namespace Checkers
                         int y0 = move.YStart + yModifier;
                         do
                         {
-                            if (board[x0][y0].Check != null)
+                            if (cell[x0][y0].StatusCheck != null)
                             {
-                                checkersToRemove.Add(new Point(x0, y0));
+                                pawnsToRemove.Add(new Point(x0, y0));
                             }
                             x0 += xmodifier;
                             y0 += yModifier;
 
                         } while (x0 != move.XEnd);
-                        if (checkersToRemove.Count <= 1)
+                        if (pawnsToRemove.Count <= 1)
                         {
                             return true;
                         }
@@ -143,11 +143,11 @@ namespace Checkers
             return false;
         }
 
-        private static bool IsGoodRecurring(Board[][] board, Move move, List<Point> checkersToRemove, ref bool atLeastOneGood)
+        private static bool IsGoodRecurring(Cell[][] cell, Move move, List<Point> pawnsToRemove, ref bool atLeastOneGood)
         {
-            if (checkersToRemove == null)
+            if (pawnsToRemove == null)
             {
-                checkersToRemove = new List<Point>();
+                pawnsToRemove = new List<Point>();
             }
             List<Move> possibilities = new List<Move>()
                 {
@@ -158,14 +158,14 @@ namespace Checkers
                 };
             foreach (var possibility in possibilities)
             {
-                Board[][] fakeBoard = board.DeepCopy();
-                if (IsMovePossible(fakeBoard, possibility, checkersToRemove))
+                Cell[][] fakeCell = cell.DeepCopy();
+                if (IsMovePossible(fakeCell, possibility, pawnsToRemove))
                 {
                     atLeastOneGood = true;
-                    fakeBoard[possibility.XEnd][possibility.YEnd].Check = fakeBoard[possibility.XStart][possibility.YStart].Check;
-                    checkersToRemove.Add(new Point(possibility.XStart, possibility.YStart));
+                    fakeCell[possibility.XEnd][possibility.YEnd].StatusCheck = fakeCell[possibility.XStart][possibility.YStart].StatusCheck;
+                    pawnsToRemove.Add(new Point(possibility.XStart, possibility.YStart));
                     Move fakeMove = new Move(possibility.XEnd, possibility.YEnd, -1, -1);
-                    if (IsGoodRecurring(fakeBoard, fakeMove, checkersToRemove,ref atLeastOneGood))
+                    if (IsGoodRecurring(fakeCell, fakeMove, pawnsToRemove,ref atLeastOneGood))
                     {
                         return true;
                     }
@@ -175,10 +175,10 @@ namespace Checkers
             return atLeastOneGood;
         }
 
-        public static bool IsMovePossible(Board[][] board, int x_start, int y_start, int x_end, int y_end, List<Point> checkersToRemove = default(List<Point>))
+        public static bool IsMovePossible(Cell[][] cell, int x_start, int y_start, int x_end, int y_end, List<Point> checkersToRemove = default(List<Point>))
         {
             Move move = new Move(x_start, y_start, x_end, y_end);
-            return IsMovePossible(board, move, checkersToRemove);
+            return IsMovePossible(cell, move, checkersToRemove);
         }
     }
 }

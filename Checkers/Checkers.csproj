@@ -45,11 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board.cs" />
+    <Compile Include="Cell.cs" />
+    <Compile Include="GameBoard.cs" />
     <Compile Include="Pawn.cs" />
     <Compile Include="IAI.cs" />
     <Compile Include="MiniMax.cs" />
     <Compile Include="Play.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UserInterface.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,6 +84,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\blackKing.png" />
+    <Content Include="Resources\blackPawn.png" />
+    <Content Include="Resources\redKing.png" />
+    <Content Include="Resources\redPawn.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

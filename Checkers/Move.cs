@@ -6,16 +6,7 @@ namespace Checkers
 
     public class Move
     {
-        
-        private Board OriginBoard;
-        private Board[,] currentBoard;
 
-
-
-        public Move()
-        {
-            OriginBoard = new Board();
-        }
         public readonly int XStart, YStart, XEnd, YEnd;
 
         public Move(int xStart, int yStart, int xEnd, int yEnd)
