@@ -16,8 +16,8 @@ namespace Checkers
         private Button[,] buttonarray = new Button[8, 8];
         private bool usersTurn = true; //when this is false, ignore their clicks!
         private bool pieceIsUp = false;
-        private Cell pickedUp;
-        private Cell putDown;
+        private Board pickedUp;
+        private Board putDown;
         private Move move = new Move(); //construct our move class for actual functionality
 
         public UserInterface()
@@ -117,7 +117,7 @@ namespace Checkers
                                 {
                                     //we should probably also check here if there's another piece that can jump, cuz then this one can't move
                                     Square.BackColor = Color.Gray; //'pick up' the piece by erasing it from the board
-                                    pickedUp = new Cell(Cell.Pawn.RED, i, j);
+                                    pickedUp = new Board(Board.PawnStatus.RedPawn, i, j);
                                     pieceIsUp = true;
                                 }
 
@@ -126,7 +126,7 @@ namespace Checkers
                             {
                                 if (Square.BackColor.Equals(Color.Gray)) //there's not already a piece in that cell
                                 {
-                                    putDown = new Cell(Cell.Pawn.NONE, i, j);
+                                    putDown = new Board(Board.PawnStatus.None, i, j);
                                     //TODO now check if they're allowed to go there,
                                     //prob using canMove() or something
                                     //and if they can,

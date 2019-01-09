@@ -1,153 +1,107 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Checkers
 {
-    class Board
+    public class Board : INotifyPropertyChanged
     {
-        public static readonly int NR_ROWS = 8;
-        public static readonly int NR_COLS = 8;
-        private Cell[,] board = new Cell[NR_ROWS, NR_COLS];
+        
+        public enum PawnStatus
+        {
+            None,
+            RedPawn,
+            BlackPawn,
+            RedKing,
+            BlackKing
+        }
+        
+        public bool IsKing
+        {
+            get { return isKing; }
+        }
+        public PawnStatus status;
+        public PawnStatus color { get; set; }
+        public bool isKing{ get; set; }
+
+        public int x { get; }
+        public int y { get; }
+
 
         public Board()
         {
-            for (int row = 0; row < NR_ROWS; ++row)
+            this.status = PawnStatus.None;
+            this.isKing = false;
+        }
+
+        public Board(PawnStatus status, bool isKingChangingField)
+        {
+            this.status = status;
+            this.isKing = isKingChangingField;
+        }
+        public Board(Checkers.Pawn check, bool isKingChangingField)
+        {
+            this.check = check;
+            this.isKing = isKingChangingField;
+        }
+        public Board(PawnStatus con, int row, int col)
+        {
+            color = con;
+            x = row;
+            y = col;
+        }
+
+        public void clearCell()
+        {
+            color = PawnStatus.None;
+        }
+
+        private Checkers.Pawn check;
+
+        public Checkers.Pawn Check
+        {
+            get { return check; }
+            set
             {
-                for (int col = 0; col < NR_COLS; ++col)
-                {
-                    if (((row == 0 || row == 2) && col % 2 != 0) || (row == 1 && col % 2 == 0))
-                    {
-                        board[row, col] = new Cell(Cell.Pawn.BLACK, row, col);
-                    }
-                    else if (((row == 5 || row == 7) && col % 2 == 0) || (row == 6 && col % 2 != 0))
-                    {
-                        board[row, col] = new Cell(Cell.Pawn.RED, row, col);
-                    }
-                    else
-                    {
-                        board[row, col] = new Cell(Cell.Pawn.NONE, row, col);
-                    }
-                }
+                check = value;
+                NotifyPropertyChanged("CheckerColor");
             }
         }
-
-        public Board(Cell[,] other)
+        public bool changeColor(bool who)
         {
-            for (int row = NR_ROWS - 1; row >= 0; --row)
+            if (color != PawnStatus.None)
             {
-                for (int col = 0; col < NR_COLS; ++col)
+                if (who.Equals(Player.BLACK))
                 {
-                    board[row, col] = other[row, col];
+                    color = PawnStatus.BlackPawn;
+                    return true;
+                }
+                if (who.Equals(Player.RED))
+                {
+                    color = PawnStatus.RedPawn;
+                    return true;
                 }
             }
-        }
-
-        //public Board makeMove(bool who, int column)
-        //{
-        //    Board newBoard = new Board(board);
-        //    int row = 0;
-        //    while (row < NR_ROWS && board[row, column] != new Cell(Cell.contents.NONE))
-        //    {
-        //        ++row;
-        //    }
-        //    if (row < NR_ROWS)
-        //    {
-        //        newBoard.board[row, column] = who == Player.MAX ? Cell.RED : Cell.BLACK;
-        //    }
-        //    else
-        //    {
-        //        // this cannot happen
-        //        Console.WriteLine("Booga booga!");
-        //    }
-        //    return newBoard;
-        //}
-
-        public List<Cell> getJumpables(bool who)
-        {
-            List<Cell> jumpables = new List<Cell>();
-            foreach (Cell cell in board)
-            {
-                
-                if (isRed(who, cell))
-                {
-                    if (isChecked(cell))
-                    {
-                        jumpables.Add(cell);
-                    }
-                }
-                else if (isBlack(who, cell))
-                {
-                    if (isChecked(cell))
-                    {
-                        jumpables.Add(cell);
-                    }
-                }
-            }
-            return jumpables;
-        }
-
-        private bool isBlack(bool who, Cell cell)
-        {
-            return who.Equals(Player.BLACK) && cell.color.Equals(Cell.Pawn.BLACK);
-        }
-        private bool isRed(bool who, Cell cell)
-        {
-            return who.Equals(Player.RED) && cell.color.Equals(Cell.Pawn.RED);
-        }
-
-        private bool isChecked(Cell cell)
-        {
-            return (checkNorth(cell) || (cell.king && checkSouth(cell)))
-                    || (checkSouth(cell) || (cell.king && checkNorth(cell)));
+            return false;
         }
         
-        private bool checkNorth(Cell cell)
+        public PawnStatus Status
         {
-            bool canJump = false;
-            if (cell.x >= 2)
+            get { return status; }
+            set
             {
-                Cell beingChecked = board[cell.x - 1, cell.y - 1];
-                if (cell.y >= 2) //check left
-                {
-                    if (isNoMatch(beingChecked, cell)) 
-                    {
-                        canJump = isEmpty(board[cell.x - 2, cell.y - 2]);
-                    }
-                }
-                if (!canJump && cell.y <= 5)
-                {
-                    beingChecked = board[cell.x + 1, cell.y + 1];
-                    if (isNoMatch(beingChecked, cell)) 
-                    {
-                        canJump = isEmpty(board[cell.x + 2, cell.y + 2]);
-                    }
-
-                }
+                status = value;
+                NotifyPropertyChanged("Status");
+                NotifyPropertyChanged("CheckerColor");
             }
-            return canJump;
         }
-
-        private bool checkSouth(Cell cell)
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            throw new NotImplementedException();
-        }
-        
-        private bool isNoMatch(Cell checking, Cell currentCell)
-        {
-            return (!checking.color.Equals(currentCell.color) && (!checking.color.Equals(Cell.Pawn.NONE)));
-        }
-        private bool isEmpty(Cell cell)
-        {
-            return cell.color.Equals(Cell.Pawn.NONE);
-        }
-
-        public Cell[,] getBoard()
-        {
-            return board;
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }
