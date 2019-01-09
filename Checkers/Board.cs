@@ -24,41 +24,34 @@ namespace Checkers
         public PawnStatus color { get; set; }
         public bool isKing{ get; set; }
 
-        public int x { get; }
-        public int y { get; }
+     
 
 
         public Board()
         {
-            this.status = PawnStatus.None;
-            this.isKing = false;
+            status = PawnStatus.None;
+            isKing = false;
         }
 
         public Board(PawnStatus status, bool isKingChangingField)
         {
             this.status = status;
-            this.isKing = isKingChangingField;
+            isKing = isKingChangingField;
         }
-        public Board(Checkers.Pawn check, bool isKingChangingField)
+        public Board(Pawn check, bool isKingChangingField)
         {
             this.check = check;
-            this.isKing = isKingChangingField;
+            isKing = isKingChangingField;
         }
-        public Board(PawnStatus con, int row, int col)
-        {
-            color = con;
-            x = row;
-            y = col;
-        }
-
-        public void clearCell()
+       
+        public void ClearCell()
         {
             color = PawnStatus.None;
         }
 
-        private Checkers.Pawn check;
+        private Pawn check;
 
-        public Checkers.Pawn Check
+        public Pawn Check
         {
             get { return check; }
             set
@@ -67,23 +60,7 @@ namespace Checkers
                 NotifyPropertyChanged("CheckerColor");
             }
         }
-        public bool changeColor(bool who)
-        {
-            if (color != PawnStatus.None)
-            {
-                if (who.Equals(Player.BLACK))
-                {
-                    color = PawnStatus.BlackPawn;
-                    return true;
-                }
-                if (who.Equals(Player.RED))
-                {
-                    color = PawnStatus.RedPawn;
-                    return true;
-                }
-            }
-            return false;
-        }
+       
         
         public PawnStatus Status
         {

@@ -12,26 +12,26 @@ namespace Checkers
             public Tree(T value)
             {
                 this.value = value;
-                this.children = new List<Tree<T>>();
+                children = new List<Tree<T>>();
             }
 
             public Tree<T> AddChild(T value)
             {
                 Tree<T> child = new Tree<T>(value);
                 child.Parent = this;
-                this.children.Add(child);
+                children.Add(child);
                 return child;
             }
 
             public void Traverse(Action<T> visitor)
             {
-                this.traverse(visitor);
+                traverse(visitor);
             }
 
             protected void traverse(Action<T> visitor)
             {
-                visitor(this.value);
-                foreach (Tree<T> child in this.children)
+                visitor(value);
+                foreach (Tree<T> child in children)
                     child.traverse(visitor);
             }
 
@@ -43,13 +43,10 @@ namespace Checkers
 
             public List<Tree<T>> Children
             {
-                get { return this.children; }
+                get { return children; }
             }
 
-            public T Value
-            {
-                get { return this.value; }
-            }
+            public T Value => value;
 
             public float Score;
 

@@ -15,25 +15,25 @@ namespace Checkers
                 checkersToRemove = new List<Point>();
             }
 
-            if (move.X_End < 0 || move.X_End > 7 || move.Y_End < 0 || move.Y_End > 7)
+            if (move.XEnd < 0 || move.XEnd > 7 || move.YEnd < 0 || move.YEnd > 7)
             {
                 return false;
             }
             
-            Board destination = board[move.X_End][move.Y_End];
+            Board destination = board[move.XEnd][move.YEnd];
             if (destination.Check != null)
             {
                 return false;
             }
 
-            Board start = board[move.X_Start][move.Y_Start];
+            Board start = board[move.XStart][move.YStart];
             if (start.Check == null)
             {
                 return false;
             }
-            bool checkKing = start.Check.isKing;
-            bool isForward = start.Check.isAI && move.Y_End >= move.Y_Start;
-            isForward = isForward || (!start.Check.isAI && move.Y_End <= move.Y_Start);
+            bool checkKing = start.Check.IsKing;
+            bool isForward = start.Check.isAI && move.YEnd >= move.YStart;
+            isForward = isForward || (!start.Check.isAI && move.YEnd <= move.YStart);
             if (!isForward && !checkKing)
             {
                 return false;
@@ -46,15 +46,15 @@ namespace Checkers
             {
                 return true;
             }
-            else if ((Math.Abs(move.X_End - move.X_Start) == 2 && Math.Abs(move.Y_End - move.Y_Start) == 2))
+            else if ((Math.Abs(move.XEnd - move.XStart) == 2 && Math.Abs(move.YEnd - move.YStart) == 2))
             {
                 if (checkersToRemove == null)
                 {
                     checkersToRemove = new List<Point>();
                 }
-                var x_FieldBetween = move.X_Start + (move.X_End - move.X_Start) / 2;
-                var y_FieldBetween = move.Y_Start + (move.Y_End - move.Y_Start) / 2;
-                Board between = board[x_FieldBetween][y_FieldBetween];
+                var xFieldBetween = move.XStart + (move.XEnd - move.XStart) / 2;
+                var yFieldBetween = move.YStart + (move.YEnd - move.YStart) / 2;
+                Board between = board[xFieldBetween][yFieldBetween];
                 if (between.Check == null)
                 {
                     return false;
@@ -63,7 +63,7 @@ namespace Checkers
                 {
                     if (between.Check.isAI)
                     {
-                        checkersToRemove.Add(new Point(x_FieldBetween, y_FieldBetween));
+                        checkersToRemove.Add(new Point(xFieldBetween, yFieldBetween));
                         return true;
                     }
                     else
@@ -79,7 +79,7 @@ namespace Checkers
                 {
                     if (!between.Check.isAI)
                     {
-                        checkersToRemove.Add(new Point(x_FieldBetween, y_FieldBetween));
+                        checkersToRemove.Add(new Point(xFieldBetween, yFieldBetween));
                         return true;
                     }
                     else
@@ -109,22 +109,22 @@ namespace Checkers
                 if (checkKing)
                 {
                     //long move with one capture maximum
-                    if (Math.Abs(move.X_End - move.X_Start) == Math.Abs(move.Y_End - move.Y_Start))
+                    if (Math.Abs(move.XEnd - move.XStart) == Math.Abs(move.YEnd - move.YStart))
                     {
-                        var Xmodifier = Math.Sign(move.X_End - move.X_Start) * 1;
-                        var YModifier = Math.Sign(move.Y_End - move.Y_Start) * 1;
-                        int x0 = move.X_Start + Xmodifier;
-                        int y0 = move.Y_Start + YModifier;
+                        var xmodifier = Math.Sign(move.XEnd - move.XStart) * 1;
+                        var yModifier = Math.Sign(move.YEnd - move.YStart) * 1;
+                        int x0 = move.XStart + xmodifier;
+                        int y0 = move.YStart + yModifier;
                         do
                         {
                             if (board[x0][y0].Check != null)
                             {
                                 checkersToRemove.Add(new Point(x0, y0));
                             }
-                            x0 += Xmodifier;
-                            y0 += YModifier;
+                            x0 += xmodifier;
+                            y0 += yModifier;
 
-                        } while (x0 != move.X_End);
+                        } while (x0 != move.XEnd);
                         if (checkersToRemove.Count <= 1)
                         {
                             return true;
@@ -151,10 +151,10 @@ namespace Checkers
             }
             List<Move> possibilities = new List<Move>()
                 {
-                    new Move(move.X_Start,move.Y_Start, move.X_Start + 2, move.Y_Start + 2),
-                    new Move(move.X_Start,move.Y_Start, move.X_Start - 2, move.Y_Start + 2),
-                    new Move(move.X_Start,move.Y_Start, move.X_Start + 2, move.Y_Start - 2),
-                    new Move(move.X_Start,move.Y_Start, move.X_Start - 2, move.Y_Start - 2)
+                    new Move(move.XStart,move.YStart, move.XStart + 2, move.YStart + 2),
+                    new Move(move.XStart,move.YStart, move.XStart - 2, move.YStart + 2),
+                    new Move(move.XStart,move.YStart, move.XStart + 2, move.YStart - 2),
+                    new Move(move.XStart,move.YStart, move.XStart - 2, move.YStart - 2)
                 };
             foreach (var possibility in possibilities)
             {
@@ -162,9 +162,9 @@ namespace Checkers
                 if (IsMovePossible(fakeBoard, possibility, checkersToRemove))
                 {
                     atLeastOneGood = true;
-                    fakeBoard[possibility.X_End][possibility.Y_End].Check = fakeBoard[possibility.X_Start][possibility.Y_Start].Check;
-                    checkersToRemove.Add(new Point(possibility.X_Start, possibility.Y_Start));
-                    Move fakeMove = new Move(possibility.X_End, possibility.Y_End, -1, -1);
+                    fakeBoard[possibility.XEnd][possibility.YEnd].Check = fakeBoard[possibility.XStart][possibility.YStart].Check;
+                    checkersToRemove.Add(new Point(possibility.XStart, possibility.YStart));
+                    Move fakeMove = new Move(possibility.XEnd, possibility.YEnd, -1, -1);
                     if (IsGoodRecurring(fakeBoard, fakeMove, checkersToRemove,ref atLeastOneGood))
                     {
                         return true;

@@ -8,32 +8,30 @@ namespace Checkers
         
         public static bool MakeMove(this Board[][] board, Move move)
         {
-            return board.MakeMove(move.X_Start, move.Y_Start, move.X_End, move.Y_End);
+            return board.MakeMove(move.XStart, move.YStart, move.XEnd, move.YEnd);
         }
-        public static bool MakeMove(this Board[][] board,int x_start, int y_start, int x_end, int y_end)
+        public static bool MakeMove(this Board[][] board,int xStart, int yStart, int xEnd, int yEnd)
         {
             List<Point> checkersToRemove = new List<Point>();
-            if (Play.IsMovePossible(board, x_start, y_start, x_end, y_end, checkersToRemove))
+            if (Play.IsMovePossible(board, xStart, yStart, xEnd, yEnd, checkersToRemove))
             {
-                var movingChecker = board[x_start][y_start].Check;
-                if (board[x_end][y_end].IsKing)
+                var movingChecker = board[xStart][yStart].Check;
+                if (board[xEnd][yEnd].IsKing)
                 {
-                    if (!movingChecker.isKing)
+                    if (!movingChecker.IsKing)
                     {
-                        movingChecker.isKing = true;
+                        movingChecker.IsKing = true;
                     }
                 }
-                board[x_end][y_end].Check = movingChecker;
-                board[x_start][y_start].Check = null;
+                board[xEnd][yEnd].Check = movingChecker;
+                board[xStart][yStart].Check = null;
                 foreach (var field in checkersToRemove)
                 {
-                    board[(int)field.X][(int)field.Y].Check = null;
+                    board[field.X][field.Y].Check = null;
                 }
                 return true;
             }
-            else
-            {
-            }
+           
             return false;
         }
         public static Board[][] DeepCopy(this Board[][] sourceBoard)
@@ -48,7 +46,7 @@ namespace Checkers
                     Pawn check = null;
                     if (sourceBoard[i][j].Check != null)
                     {
-                        check = new Pawn(sourceBoard[i][j].Check.isKing, sourceBoard[i][j].Check.isAI);
+                        check = new Pawn(sourceBoard[i][j].Check.IsKing, sourceBoard[i][j].Check.isAI);
                     }
                     result[i][j] = new Board(check, sourceBoard[i][j].IsKing);
                 }

@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace Checkers
 {
-    class MiniMax : IAI
+    internal class MiniMax : IAI
     {
-        const int AI_TREEDEPTH = 3;
+        private int AI_TREEDEPTH = 3;
 
-        const int WEIGHT_SINGLECHECKER = 2;
-        const int WEIGHT_KING = 4;
+        private int WEIGHT_SINGLECHECKER = 2;
+        private int WEIGHT_KING = 4;
 
-        Tree<Move> gameTree;
+        private Tree<Move> gameTree;
 
         public Move GetNextMove(Board[][] board)
         {
@@ -35,7 +35,7 @@ namespace Checkers
         {
             try
             {
-                board.MakeMove(tree.Value.X_Start, tree.Value.Y_Start, tree.Value.X_End, tree.Value.Y_End);
+                board.MakeMove(tree.Value.XStart, tree.Value.YStart, tree.Value.XEnd, tree.Value.YEnd);
                 tree.Score = ScoreBoard(board, isMaxing);
                 if (depth > 0)
                 {
@@ -48,6 +48,7 @@ namespace Checkers
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
 
             }
             //should i return sth or not
@@ -111,11 +112,11 @@ namespace Checkers
                         {
                             score -= WEIGHT_SINGLECHECKER;
                         }
-                        if (checker.isAI && checker.isKing)
+                        if (checker.isAI && checker.IsKing)
                         {
                             score += WEIGHT_KING;
                         }
-                        if (!checker.isAI && checker.isKing)
+                        if (!checker.isAI && checker.IsKing)
                         {
                             score -= WEIGHT_KING;
                         }
