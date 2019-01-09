@@ -13,7 +13,7 @@ using Checkers.Annotations;
 
 namespace Checkers
 {
-    public partial class UserInterface : Form, INotifyPropertyChanged
+    public partial class UserInterface : Window, INotifyPropertyChanged
     {
         private GameBoard GameBoard;
             
