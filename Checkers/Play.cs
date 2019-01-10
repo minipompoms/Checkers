@@ -32,20 +32,20 @@ namespace Checkers
                 return false;
             }
             bool checkKing = start.StatusCheck.isKing;
-            bool isForward = start.StatusCheck.isAI && move.YEnd >= move.YStart;
-            isForward = isForward || (!start.StatusCheck.isAI && move.YEnd <= move.YStart);
+            //there was a bug in the following 2 lines- since AI starts from the bottom of the board,
+            //it should be <= for when StatusCheck.isAI and >= when it's the user (!StatusCheck.isAI)
+            //also, we changed all the Ys to Xs because the Xs are the rows and that's what we're checking
+            bool isForward = start.StatusCheck.isAI && move.XEnd <= move.XStart;
+            isForward = isForward || (!start.StatusCheck.isAI && move.XEnd >= move.XStart);
             if (!isForward && !checkKing)
             {
                 return false;
             }
-            if (move.IsBasicMove && isForward)
+            if (move.IsBasicMove && (isForward || checkKing))
             {
                 return true;
             }
-            if (move.IsBasicMove && checkKing)
-            {
-                return true;
-            }
+           
             else if ((Math.Abs(move.XEnd - move.XStart) == 2 && Math.Abs(move.YEnd - move.YStart) == 2))
             {
                 if (pawnsToRemove == null)
