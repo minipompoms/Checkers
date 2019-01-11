@@ -138,7 +138,8 @@ namespace Checkers
                                         pieceIsUp = false;
 
                                         //this is throwing exception
-                                        move = minimax.GetNextMove(board.Board);
+                                        Cell[][] cells = board.Board;
+                                        move = minimax.GetNextMove(cells);
 
                                         if (doTheMove(board, move)) //if move (returned by MiniMax) works,
                                         {
@@ -158,6 +159,7 @@ namespace Checkers
                                             if (Math.Abs(startX - endX) == 2) eraseJumpedPiece(startX, startY, endX, endY);
                                             usersTurn = true; //and now it's their turn again
                                         }
+                                        //usersTurn = true;
                                     }
                                     else //if user's move doesn't work,
                                     {

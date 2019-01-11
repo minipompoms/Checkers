@@ -85,7 +85,7 @@ namespace Checkers
             {
                 for (int j = 0; j < cell.Length; j++)
                 {
-                    if (cell[i][j].StatusCheck == null && (i + j) % 2 != 0)
+                    if (cell[i][j].StatusCheck == null && (i + j) % 2 == 0)
                     {
                         openSquares.Add(new Point(i, j));
                     }

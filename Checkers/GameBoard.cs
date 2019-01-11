@@ -64,17 +64,21 @@ namespace Checkers
                 board[row] = new Cell[boardSize];
                 for (int col = 0; col < boardSize; ++col)
                 {
+                    Cell cell;
                     if (((row == 0 || row == 2) && col % 2 == 0) || (row == 1 && col % 2 != 0))
                     {
-                        board[row][col] = new Cell(new Pawn(!isKing, !isAI), !isKing);
+                        cell = new Cell(new Pawn(!isKing, !isAI), !isKing);
+                        board[row][col] = cell;
                     }
                     else if (((row == 5 || row == 7) && col % 2 != 0) || (row == 6 && col % 2 == 0))
                     {
-                        board[row][col] = new Cell(new Pawn(!isKing, isAI), !isKing);
+                        cell = new Cell(new Pawn(!isKing, isAI), !isKing);
+                        board[row][col] = cell;
                     }
                     else
                     {
-                        board[row][col] = new Cell(null, !isKing);
+                        cell = new Cell(null, !isKing);
+                        board[row][col] = cell;
                     }
                 }
             }

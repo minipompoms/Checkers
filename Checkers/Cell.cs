@@ -45,6 +45,15 @@ namespace Checkers
 
         public Cell(PawnStatus status, bool isKingChangingField)
         {
+            if (status.Equals(PawnStatus.None)) statusCheck = null;
+            else if (status.Equals(PawnStatus.RedPawn) || status.Equals(PawnStatus.RedKing))
+            {
+                statusCheck = new Pawn(isKingChangingField, false);
+            }
+            else if (status.Equals(PawnStatus.BlackPawn) || status.Equals(PawnStatus.BlackKing))
+            {
+                statusCheck = new Pawn(isKingChangingField, true);
+            }
             this.status = status;
             isKing = isKingChangingField;
         }
@@ -52,6 +61,9 @@ namespace Checkers
         {
             statusCheck = check;
             isKing = isKingChangingField;
+            if (check == null) status = status = PawnStatus.None;
+            else if (check.isAI) status = PawnStatus.BlackPawn;
+            else if (!check.isAI) status = PawnStatus.RedPawn;
         }
      
         public PawnStatus Status

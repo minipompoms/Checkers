@@ -68,10 +68,10 @@ namespace Checkers
                     }
                     else
                     {
-                        if (checkKing)
+                        /*if (checkKing)
                         {
                             return true;
-                        }
+                        }*/
                         return false;
                     }
                 }
@@ -84,10 +84,11 @@ namespace Checkers
                     }
                     else
                     {
+                        /*
                         if (checkKing)
                         {
                             return true;
-                        }
+                        }*/
                         return false;
                     }
                 }
