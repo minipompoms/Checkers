@@ -26,38 +26,61 @@ namespace Checkers
 
         private void InitBoard()
         {
-            this.board = new Cell[boardSize][];
+            board = new Cell[boardSize][];
             bool isAI = true;
             bool isKing = true;
 
-            for (int i = 0; i < boardSize; i++)
+            //for (int i = 0; i < boardSize; i++)
+            //{
+                
+            //    if (i % 2 == 0)
+            //    {
+            //        board[0][i] = new Cell(new Pawn(!isKing, isAI), !isKing);
+            //        board[2][i] = new Cell(new Pawn(!isKing, isAI), !isKing);
+            //        board[6][i] = new Cell(new Pawn(!isKing, !isAI), !isKing);
+
+            //        board[1][i] = new Cell(null, !isKing);
+            //        board[3][i] = new Cell(null, !isKing);
+            //        board[4][i] = new Cell(null, !isKing);
+            //        board[5][i] = new Cell(null, !isKing);
+            //        board[7][i] = new Cell(null, !isKing);
+            //    }
+            //    else
+            //    {
+            //        board[1][i] = new Cell(new Pawn(!isKing, isAI), !isKing);
+            //        board[5][i] = new Cell(new Pawn(!isKing, !isAI), !isKing);
+            //        board[7][i] = new Cell(new Pawn(!isKing, !isAI), !isKing);
+
+            //        board[0][i] = new Cell(null, !isKing);
+            //        board[2][i] = new Cell(null, !isKing);
+            //        board[3][i] = new Cell(null, !isKing);
+            //        board[4][i] = new Cell(null, !isKing);
+            //        board[6][i] = new Cell(null, !isKing);
+            //    }
+            //}
+
+            for (int row = 0; row < boardSize; ++row)
             {
-                board[i] = new Cell[boardSize];
-                if (i % 2 != 0)
+                board[row] = new Cell[boardSize];
+                for (int col = 0; col < boardSize; ++col)
                 {
-                    board[i][0] = new Cell(new Pawn(!isKing, isAI), isKing);
-                    board[i][2] = new Cell(new Pawn(!isKing, isAI), !isKing);
-                    board[i][6] = new Cell(new Pawn(!isKing, !isAI), !isKing);
-
-                    board[i][1] = new Cell(null, !isKing);
-                    board[i][3] = new Cell(null, !isKing);
-                    board[i][4] = new Cell(null, !isKing);
-                    board[i][5] = new Cell(null, !isKing);
-                    board[i][7] = new Cell(null, !isKing);
-                }
-                else
-                {
-                    board[i][1] = new Cell(new Pawn(!isKing, isAI), !isKing);
-                    board[i][5] = new Cell(new Pawn(!isKing, !isAI), !isKing);
-                    board[i][7] = new Cell(new Pawn(!isKing, !isAI), isKing);
-
-                    board[i][0] = new Cell(null, !isKing);
-                    board[i][2] = new Cell(null, !isKing);
-                    board[i][3] = new Cell(null, !isKing);
-                    board[i][4] = new Cell(null, !isKing);
-                    board[i][6] = new Cell(null, !isKing);
+                    if (((row == 0 || row == 2) && col % 2 == 0) || (row == 1 && col % 2 != 0))
+                    {
+                        board[row][col] = new Cell(new Pawn(!isKing, !isAI), !isKing);
+                    }
+                    else if (((row == 5 || row == 7) && col % 2 != 0) || (row == 6 && col % 2 == 0))
+                    {
+                        board[row][col] = new Cell(new Pawn(!isKing, isAI), !isKing);
+                    }
+                    else
+                    {
+                        board[row][col] = new Cell(null, !isKing);
+                    }
                 }
             }
+
+
+
         }
 
         public string Name
